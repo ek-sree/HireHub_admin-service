@@ -1,5 +1,6 @@
-import { loginAdmin } from "../../application/use-case/admin";
+import { loginAdmin, saveUser } from "../../application/use-case/admin";
 import * as grpc from '@grpc/grpc-js';
+import { IUser } from "../../domain/entities/IUser";
 
 export const adminController = {
     loginAdmin: async(call: any, callback:any) => {
@@ -16,5 +17,15 @@ export const adminController = {
                message:err.message,
             },null); 
            }
+    },
+
+    processUserData: async (userData: IUser) => {
+        try {
+            await saveUser(userData);
+            console.log(`Saved user ${userData.email} from RabbitMQ`);
+        } catch (error) {
+            console.error('Error processing user data:', error);
+            throw error;
+        }
     }
 }

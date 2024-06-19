@@ -1,3 +1,4 @@
+import { IUser } from "../../domain/entities/IUser";
 import { AdminRepository } from "../../domain/repositories/AdminRepository"
 
 const adminRepo = new AdminRepository()
@@ -12,3 +13,13 @@ export const loginAdmin = async (email: string, password: string): Promise<any> 
         throw new Error(`Error saving user: ${err.message}`);
     }
 }
+export const saveUser = async (userData: IUser): Promise<void> => {
+    try {
+        
+        await adminRepo.save(userData);
+        console.log(`Saved user ${userData.email} in admin database`);
+    } catch (error) {
+        console.error('Error saving user:', error);
+        throw error;
+    }
+};

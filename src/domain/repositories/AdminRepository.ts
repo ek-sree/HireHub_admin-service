@@ -2,6 +2,7 @@ import { IAdminRepository } from "./IAdminRepository";
 import { IAdmin } from "../entities/IAdmin";
 import { admin } from "../../model/Admin";
 import bcrytp from 'bcrypt';
+import { IUser } from "../entities/IUser";
 
 export class AdminRepository implements IAdminRepository {
 
@@ -21,4 +22,15 @@ export class AdminRepository implements IAdminRepository {
             throw new Error(`Error finding user by email and password: ${err.message}`);
         }
     }
+
+        save = async (userData: IUser): Promise<void> => {
+        try {
+            const newUser = new admin(userData);
+            await newUser.save();
+            console.log(`Saved user ${userData.email} in admin database`);
+        } catch (error) {
+            console.error('Error saving user:', error);
+            throw error;
+        }
+    };
 }
